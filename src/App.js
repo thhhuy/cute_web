@@ -17,7 +17,6 @@ const AppContainer = styled.div`
   position: relative;
 `;
 
-// Adding decorative elements
 const DecorationCircle = styled(motion.div)`
   position: absolute;
   border-radius: 50%;
@@ -44,7 +43,7 @@ const Star = styled.div`
   border-radius: 50%;
   opacity: ${props => props.opacity};
   animation: twinkle ${props => props.duration}s ease-in-out infinite;
-  
+
   @keyframes twinkle {
     0%, 100% { opacity: ${props => props.opacity}; transform: scale(1); }
     50% { opacity: ${props => props.opacity * 0.5}; transform: scale(0.8); }
@@ -64,27 +63,7 @@ const Title = styled(motion.h1)`
   padding: 0 15px;
   width: 100%;
   max-width: 90vw;
-
-  @media (max-width: 768px) {
-    font-size: clamp(1.5rem, 4vw, 2rem);
-    margin-bottom: 15px;
-  }
-  
-  @media (max-width: 480px) {
-    font-size: clamp(1.2rem, 3.5vw, 1.8rem);
-    letter-spacing: 0.5px;
-  }
 `;
-
-// Then in your JSX:
-<Title
-  initial={{ opacity: 0, y: -50 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 1 }}
-  className="responsive-title"
->
- Chúc mừng ngày 8/3, cún iu cụa anhhh!
-</Title>
 
 const PuppyContainer = styled(motion.div)`
   width: 100%;
@@ -95,7 +74,7 @@ const PuppyContainer = styled(motion.div)`
   z-index: 5;
   margin-bottom: 20px;
   position: relative;
-  
+
   &:after {
     content: '';
     position: absolute;
@@ -110,48 +89,20 @@ const PuppyContainer = styled(motion.div)`
   }
 `;
 
-// Decorative frame around the puppy
-// const PuppyFrame = styled.div`
-//   position: absolute;
-//   width: 80%;
-//   height: 90%;
-//   border: 2px dashed rgba(255, 105, 180, 0.3);
-//   border-radius: 20px;
-//   z-index: 4;
-//   pointer-events: none;
-  
-//   &:before, &:after {
-//     content: '';
-//     position: absolute;
-//     width: 20px;
-//     height: 20px;
-//     border-radius: 50%;
-//     background-color: rgba(255, 105, 180, 0.5);
-//   }
-  
-//   &:before {
-//     top: -10px;
-//     left: -10px;
-//   }
-  
-//   &:after {
-//     bottom: -10px;
-//     right: -10px;
-//   }
-// `;
+const GREETING_TEXT = "Chúc mừng ngày 8/3, Lê đáng yêu của tớ"; 
 
 function App() {
   const modelViewerRef = useRef(null);
-  
+
   const stars = Array.from({ length: 50 }).map((_, i) => {
     const size = Math.random() * 3 + 1;
     const opacity = Math.random() * 0.5 + 0.3;
     const top = Math.random() * 100;
     const left = Math.random() * 100;
     const duration = Math.random() * 3 + 2;
-    
+
     return (
-      <Star 
+      <Star
         key={i}
         size={size}
         opacity={opacity}
@@ -161,7 +112,6 @@ function App() {
     );
   });
 
-  // Decorative circles
   const circles = [
     { size: 300, x: '10%', y: '20%', delay: 0 },
     { size: 200, x: '85%', y: '15%', delay: 0.3 },
@@ -171,49 +121,44 @@ function App() {
 
   useEffect(() => {
     if (modelViewerRef.current) {
-      // Any model-viewer specific setup
+      // Model viewer setup nếu cần
     }
   }, []);
 
   return (
     <AppContainer>
-      {/* Background stars */}
-      <StarContainer>
-        {stars}
-      </StarContainer>
-      
-      {/* Decorative circles */}
+      <StarContainer>{stars}</StarContainer>
+
       {circles.map((circle, index) => (
         <DecorationCircle
           key={index}
-          style={{ 
-            width: circle.size, 
-            height: circle.size, 
-            left: circle.x, 
-            top: circle.y 
+          style={{
+            width: circle.size,
+            height: circle.size,
+            left: circle.x,
+            top: circle.y,
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.6 }}
           transition={{ delay: circle.delay, duration: 1 }}
         />
       ))}
-      
+
       <FloatingHearts count={20} />
-      
+
       <Title
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
       >
-        Chúc mừng ngày 8/3, cún iu cụa anhhh!
+        {GREETING_TEXT}
       </Title>
-      
+
       <PuppyContainer
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1, delay: 0.5 }}
       >
-        {/* <PuppyFrame /> */}
         <model-viewer
           ref={modelViewerRef}
           src="/toon_cute_dog.glb"
@@ -221,8 +166,6 @@ function App() {
           auto-rotate
           camera-controls
           camera-orbit="0deg 10deg 2m"
-          min-camera-orbit="auto auto auto"
-          max-camera-orbit="auto auto auto"
           shadow-intensity="1"
           environment-image="neutral"
           exposure="1"
@@ -231,7 +174,7 @@ function App() {
           style={{ width: '100%', height: '90%' }}
         ></model-viewer>
       </PuppyContainer>
-      
+
       <MessageCard marginBottom={true} />
     </AppContainer>
   );
